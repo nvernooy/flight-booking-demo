@@ -1,0 +1,33 @@
+<mat-toolbar class="topbar telative" color="gray">
+    <!-- ============================================================== -->
+    <!-- sidebar toggle -->
+    <!-- ============================================================== -->
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>search</mat-icon>
+          <span>Search flights</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>calendar_today</mat-icon>
+          <span>View bookings</span>
+        </button>
+    </mat-menu>
+
+    <!-- ============================================================== -->
+    <!-- Logo - style you can find in header.scss -->
+    <!-- ============================================================== -->
+    <div class="navbar-header">
+        <a class="navbar-brand" href="/">
+            Flight Booking
+        </a>
+    </div>
+    <span fxFlex></span>
+</mat-toolbar>
+
+
+<div class="page-content">
+    <router-outlet> </router-outlet>
+</div>
