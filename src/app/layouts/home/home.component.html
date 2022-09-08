@@ -1,0 +1,17 @@
+<div class="home-wrapper" fxLayout="row wrap">
+    <div fxFlex="50">
+        <img src="/assets/airplane.jpg" />
+    </div>
+
+    <div fxFlex="50">
+        <div class="button-wrapper" fxLayout="column">
+            <button mat-stroked-button [routerLink]="['flights']">Search for a flight</button>
+            <button mat-stroked-button [routerLink]="['bookings']">View your bookings</button>
+        </div>
+
+    </div>
+
+    <div class="diagonal-box" fxFlex="100">
+        <div class="content"></div>
+    </div>
+</div>
