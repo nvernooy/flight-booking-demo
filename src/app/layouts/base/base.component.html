@@ -6,11 +6,11 @@
         <mat-icon>menu</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
-        <button mat-menu-item>
+        <button [routerLink]="['flights']" mat-menu-item>
           <mat-icon>search</mat-icon>
           <span>Search flights</span>
         </button>
-        <button mat-menu-item>
+        <button [routerLink]="['bookings']" mat-menu-item>
           <mat-icon>calendar_today</mat-icon>
           <span>View bookings</span>
         </button>

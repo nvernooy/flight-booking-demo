@@ -75,7 +75,7 @@
                                 </mat-label>
                                 <input (click)="departureDatepicker.open()" (focus)="departureDatepicker.open()"
                                     [formControl]="form.controls['departureDate']" [matDatepicker]="departureDatepicker"
-                                    matInput [min]="today" />
+                                    matInput [min]="today" [max]="maxDate" />
                                 <mat-datepicker-toggle [for]="departureDatepicker" matSuffix></mat-datepicker-toggle>
                                 <mat-datepicker #departureDatepicker></mat-datepicker>
                             </mat-form-field>
@@ -108,7 +108,7 @@
                                 </mat-label>
                                 <input (click)="arrivalDatepicker.open()" (focus)="arrivalDatepicker.open()"
                                     [formControl]="form.controls['arrivalDate']" [matDatepicker]="arrivalDatepicker"
-                                    matInput [min]="form.controls['departureDate'].value" />
+                                    matInput [min]="form.controls['departureDate'].value" [max]="maxDate"/>
                                 <mat-datepicker-toggle [for]="arrivalDatepicker" matSuffix></mat-datepicker-toggle>
                                 <mat-datepicker #arrivalDatepicker [startAt]="form.controls['departureDate'].value">
                                 </mat-datepicker>
