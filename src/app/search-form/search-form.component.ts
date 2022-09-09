@@ -40,6 +40,7 @@ export class SearchFormComponent implements OnInit {
     departSelection: any;
     returnSelection: any;
 
+    // component that handles searching for aiports and matching flights
     constructor(private fb: FormBuilder,
         private flightSearch: FlightSearchService,
         private bookingService: BookingService,
@@ -53,7 +54,7 @@ export class SearchFormComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
+        // keep track of destination and flight data
         this.form = this.fb.group({
             departureAirport: [
                 null,
@@ -92,6 +93,7 @@ export class SearchFormComponent implements OnInit {
         this.onFormChanges()
     }
 
+    // search for the aiport using text matching and store result
     onFormChanges() {
         this.form
             .get("departureAirport")
@@ -147,6 +149,7 @@ export class SearchFormComponent implements OnInit {
         return airport ? airport.shortName : undefined;
     }
 
+    // search for flights matching the parameters
     searchFlights() {
         this.flightMessage = "";
         this.searching = true;
@@ -165,6 +168,7 @@ export class SearchFormComponent implements OnInit {
             this.searching = false;
         });
 
+        // if the user selected a return flight search for flights
         if (form.return) {
             const arriveDateStart = this.formatDate(form.arrivalDate) + "T08:00";
             const arriveDateEnd = this.formatDate(form.arrivalDate) + "T20:00";
@@ -191,6 +195,7 @@ export class SearchFormComponent implements OnInit {
         return true
     }
 
+    // track the flights the user selects in the listing
     toggleDepartFlight(flight) {
         if (this.departSelection && this.departSelection.number === flight.number) {
             this.departSelection = null;
@@ -207,6 +212,7 @@ export class SearchFormComponent implements OnInit {
         }
     }
 
+    // open the dialog to capture the user data to finalise the booking
     bookFlight() {
         const form = this.form.value;
         // save the user selection of their flight

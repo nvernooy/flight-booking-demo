@@ -12,6 +12,7 @@ export class BookingsListingComponent implements OnInit {
 
     constructor(private bookingService: BookingService) { }
 
+    // list all the bookings the users has made
     ngOnInit(): void {
         this.bookings = this.bookingService.listBookings();
     }

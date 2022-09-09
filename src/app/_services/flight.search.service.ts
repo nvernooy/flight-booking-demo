@@ -12,6 +12,7 @@ const headerData = {
 export class FlightSearchService {
     constructor(private http: HttpClient) {}
 
+    // search aiports using text match with aerodata API
     searchAirports(text: string) {
         const params = {q: text};
         const headers = new HttpHeaders(headerData);
@@ -19,6 +20,7 @@ export class FlightSearchService {
         return this.http.get<any>('https://aerodatabox.p.rapidapi.com/airports/search/term', {headers, params});
     }
 
+    // search flights matching parameters using aerodata API
     searchFlights(icao: string, fromLocal: string, toLocal: string, direction: string) {
         const params = { direction };
         const headers = new HttpHeaders(headerData);

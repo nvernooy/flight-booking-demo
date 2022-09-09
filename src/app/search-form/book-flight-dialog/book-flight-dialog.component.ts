@@ -17,6 +17,7 @@ export class BookFlightDialogComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data,
     ) {}
 
+    // show a form in a dialog for user to fill in personal information
     ngOnInit() {
         this.form = this.fb.group({
             title: "",
@@ -35,6 +36,7 @@ export class BookFlightDialogComponent implements OnInit {
         });
     }
 
+    // store the flight data and personal data
     submit() {
         const form = this.form.value;
         const data = Object.assign({}, form, this.data)
