@@ -1,0 +1,219 @@
+<div fxLayout="row" class="content-wrapper">
+    <div fxFlex="100%">
+        <h1>Search for flights around the world</h1>
+
+        <mat-card>
+            <mat-card-content>
+
+                <form [formGroup]="form">
+                    <div fxLayout="row">
+
+                        <div fxFlex="50">
+                            <mat-form-field>
+                                <mat-label>Departure Airport</mat-label>
+                                <input [formControl]="form.controls['departureAirport']"
+                                    [matAutocomplete]="autoDAirport" matInput />
+                                <button (click)="
+                        form.controls['departureAirport'].patchValue(undefined, {
+                            emitEvent: true
+                        })
+                    " *ngIf="form.controls.departureAirport.value" aria-label="Clear" mat-button mat-icon-button
+                                    matSuffix>
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-hint>{{departureMessage ? departureMessage : "Search City or Airport"}}</mat-hint>
+                            </mat-form-field>
+
+                            <mat-autocomplete #autoDAirport="matAutocomplete" [displayWith]="displayAirportFn">
+                                <mat-option *ngIf="isLoading" class="is-loading">
+                                    <mat-spinner diameter="25"></mat-spinner>
+                                </mat-option>
+                                <ng-container *ngIf="!isLoading">
+                                    <mat-option *ngFor="let airport of filteredDepartureAirports" [value]="airport">
+                                        <span>{{airport.iata}}, {{ airport.shortName }}, {{airport.countryCode}}</span>
+                                    </mat-option>
+                                </ng-container>
+                            </mat-autocomplete>
+                        </div>
+
+                        <div fxFlex="50">
+                            <mat-form-field>
+                                <mat-label>Arrival Airport</mat-label>
+                                <input [formControl]="form.controls['arrivalAirport']" [matAutocomplete]="autoAAirport"
+                                    matInput />
+                                <button (click)="
+                        form.controls['arrivalAirport'].patchValue(undefined, {
+                            emitEvent: true
+                        })
+                    " *ngIf="form.controls.arrivalAirport.value" aria-label="Clear" mat-button mat-icon-button
+                                    matSuffix>
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-hint>{{arrivalMessage ? arrivalMessage : "Search City or Airport"}}</mat-hint>
+                            </mat-form-field>
+
+                            <mat-autocomplete #autoAAirport="matAutocomplete" [displayWith]="displayAirportFn">
+                                <mat-option *ngIf="isLoading" class="is-loading">
+                                    <mat-spinner diameter="25"></mat-spinner>
+                                </mat-option>
+                                <ng-container *ngIf="!isLoading">
+                                    <mat-option *ngFor="let airport of filteredArrivalAirports" [value]="airport">
+                                        <span>{{airport.iata}}, {{ airport.shortName }}, {{airport.countryCode}}</span>
+                                    </mat-option>
+                                </ng-container>
+                            </mat-autocomplete>
+                        </div>
+
+                    </div>
+
+                    <div fxLayout="row">
+
+                        <div fxFlex="50">
+                            <mat-form-field>
+                                <mat-label>Departure Date
+                                    <span class="text-required">*</span>
+                                </mat-label>
+                                <input (click)="departureDatepicker.open()" (focus)="departureDatepicker.open()"
+                                    [formControl]="form.controls['departureDate']" [matDatepicker]="departureDatepicker"
+                                    matInput [min]="today" />
+                                <mat-datepicker-toggle [for]="departureDatepicker" matSuffix></mat-datepicker-toggle>
+                                <mat-datepicker #departureDatepicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxFlex="50">
+                            <mat-form-field>
+                                <mat-label>Passengers</mat-label>
+                                <input [formControl]="form.controls['passengers']" matInput min="1" type="number" />
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+
+                    <div fxLayout="row">
+
+                        <div fxFlex="100">
+                            <mat-checkbox [formControl]="form.get('return')" labelPosition="before">
+                                Return Flight
+                            </mat-checkbox>
+                        </div>
+                    </div>
+
+                    <div fxLayout="row">
+
+                        <div fxFlex="50" *ngIf="form.controls.return.value">
+                            <mat-form-field>
+                                <mat-label>Return Date
+                                    <span class="text-required">*</span>
+                                </mat-label>
+                                <input (click)="arrivalDatepicker.open()" (focus)="arrivalDatepicker.open()"
+                                    [formControl]="form.controls['arrivalDate']" [matDatepicker]="arrivalDatepicker"
+                                    matInput [min]="form.controls['departureDate'].value" />
+                                <mat-datepicker-toggle [for]="arrivalDatepicker" matSuffix></mat-datepicker-toggle>
+                                <mat-datepicker #arrivalDatepicker [startAt]="form.controls['departureDate'].value">
+                                </mat-datepicker>
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+                </form>
+
+                <div fxLayout="row" fxLayoutAlign="end center" class="submit-wrapper">
+                    <button (click)="searchFlights()" [disabled]="!form.valid" cdkFocusInitial color="primary"
+                        mat-stroked-button>
+                        Search Flights
+                    </button>
+                </div>
+
+            </mat-card-content>
+        </mat-card>
+
+        <mat-spinner *ngIf="searching" diameter="100"></mat-spinner>
+
+
+        <div *ngIf="departureFlights.length">
+            <div>
+
+                <div>
+                    <h1>Flight Offers</h1>
+
+                    <div fxLayout="row" class="flights-wrapper">
+
+                        <div fxFlex="45">
+                            <h4>Departures: </h4>
+
+                            <mat-card *ngFor="let flight of departureFlights"
+                                [ngClass]="{'checked-flight': departSelection?.number === flight.number}">
+
+                                <mat-card-content (click)="toggleDepartFlight(flight)">
+
+                                    <div fxLayout="row">
+                                        <div fxFlex="10">
+                                            <mat-checkbox color="primary"
+                                                [checked]="departSelection?.number === flight.number"></mat-checkbox>
+                                        </div>
+                                        <div fxFlex>
+                                            <div fxLayout="column" class="flight-info">
+                                                <mat-card-title><strong>Flight </strong> {{ flight.number }}
+                                                </mat-card-title>
+                                                <p><strong>Airline:</strong> {{ flight.airline.name }}</p>
+
+                                                <p>
+                                                    <strong>Departure:</strong> {{
+                                                    flight.movement.scheduledTimeLocal | date : "medium" }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </mat-card-content>
+
+                            </mat-card>
+                        </div>
+
+                        <div fxFlex="50" *ngIf="arrivalFlights.length" class="arrivals-wrapper">
+                            <h4>Returns: </h4>
+
+                            <mat-card *ngFor="let flight of arrivalFlights"
+                                [ngClass]="{'checked-flight': returnSelection?.number === flight.number}">
+
+                                <mat-card-content (click)="toggleReturnFlight(flight)">
+
+                                    <div fxLayout="row">
+                                        <div fxFlex="10">
+                                            <mat-checkbox color="primary"
+                                                [checked]="returnSelection && (returnSelection.number === flight.number)">
+                                            </mat-checkbox>
+                                        </div>
+                                        <div fxFlex>
+                                            <div fxLayout="column" class="flight-info">
+                                                <mat-card-title><strong>Flight </strong> {{ flight.number }}
+                                                </mat-card-title>
+                                                <p><strong>Airline:</strong> {{ flight.airline.name }}</p>
+
+                                                <p>
+                                                    <strong>Departure:</strong> {{
+                                                    flight.movement.scheduledTimeLocal | date : "medium" }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </mat-card-content>
+
+                            </mat-card>
+                        </div>
+
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <button mat-flat-button color="primary" fxFlex="30" class="confirm-button"
+                            [disabled]="!flightSelectionValid()" (click)="bookFlight()">Confirm</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
