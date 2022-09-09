@@ -1,0 +1,60 @@
+<h1 mat-dialog-title>Finalise Booking Flight</h1>
+<div mat-dialog-content>
+    <h4>Enter your personal information</h4>
+    <form [formGroup]="form">
+        <div fxLayout="row wrap" fxLayoutAlign="space-evenly center">
+            <div fxFlex="43">
+                <mat-form-field style="width: 100%">
+                    <input
+                        [formControl]="form.controls['title']"
+                        matInput type="text"
+                        placeholder="Title"
+                    />
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="43">
+                <mat-form-field style="width: 100%">
+                    <input
+                        [formControl]="form.controls['name']"
+                        matInput type="text"
+                        placeholder="First Name"
+                    />
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="92">
+                <mat-form-field style="width: 100%">
+                    <input
+                        [formControl]="form.controls['surname']"
+                        matInput type="text"
+                        placeholder="Surname"
+                    />
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="92">
+                <mat-form-field style="width: 100%">
+                    <input
+                        [formControl]="form.controls['id_number']"
+                        matInput
+                        placeholder="Identification Number"
+                    />
+                </mat-form-field>
+            </div>
+
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <span fxFlex></span>
+    <button (click)="onNoClick()" mat-button>Cancel</button>
+    <button
+        (click)="submit()"
+        cdkFocusInitial
+        color="primary"
+        mat-button
+    >
+        Submit
+    </button>
+</div>
