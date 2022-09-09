@@ -12,11 +12,13 @@ import { MaterialModule } from './material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
 import { BookFlightDialogComponent } from './search-form/book-flight-dialog/book-flight-dialog.component';
+import { BookingsListingComponent } from './bookings-listing/bookings-listing.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         BaseComponent,
+        BookingsListingComponent,
         SearchFormComponent,
         HomeComponent,
         BookFlightDialogComponent

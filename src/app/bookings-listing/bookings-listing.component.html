@@ -1,0 +1,40 @@
+<div fxLayout="row" class="content-wrapper">
+    <div fxFlex="100%">
+        <h1>Your current flight bookings</h1>
+
+        <mat-card *ngFor="let booking of bookings">
+            <mat-card-content>
+
+                <div fxLayout="row">
+                    <div fxFlex>
+                        <div fxLayout="column" class="flight-info">
+                            <mat-card-title><strong>Flight </strong> {{ booking.departureFlight.number }}
+                            </mat-card-title>
+                            <p><strong>Airline:</strong> {{ booking.departureFlight.airline.name }}</p>
+
+                            <p>
+                                <strong>Departure:</strong> {{
+                                    booking.departureFlight.movement.scheduledTimeLocal | date : "medium" }}
+                            </p>
+
+                            <p>
+                                <strong>From:</strong> {{ booking.departureAirport.iata }}, {{ booking.departureAirport.shortName }}
+                            </p>
+
+                            <p>
+                                <strong>Passengers:</strong> {{
+                                    booking.passengers }}
+                            </p>
+
+                            <p>
+                                <strong>Booked as:</strong> {{ booking.title }} {{ booking.name }} {{ booking.surname }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </mat-card-content>
+        </mat-card>
+
+    </div>
+</div>
